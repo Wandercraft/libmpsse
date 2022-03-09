@@ -6,14 +6,14 @@
 
 %typemap(in) (char *data, int size)
 {
-        if(!PyString_Check($input))
+        if(!PyBytes_Check($input))
         {
                 PyErr_SetString(PyExc_ValueError, "String value required");
                 return NULL;
         }
 
-        $1 = PyString_AsString($input);
-        $2 = PyString_Size($input);
+        $1 = PyBytes_AsString($input);
+        $2 = PyBytes_Size($input);
 }
 
 %typemap(out) swig_string_data
