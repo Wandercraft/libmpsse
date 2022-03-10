@@ -237,9 +237,12 @@ void Close(struct mpsse_context *mpsse)
 {
 	if(mpsse)
 	{
-		ftdi_set_bitmode(&mpsse->ftdi, 0, BITMODE_RESET);
-		ftdi_usb_close(&mpsse->ftdi);
-		ftdi_deinit(&mpsse->ftdi);
+		if(mpsse->open)
+		{
+			ftdi_set_bitmode(&mpsse->ftdi, 0, BITMODE_RESET);
+			ftdi_usb_close(&mpsse->ftdi);
+			ftdi_deinit(&mpsse->ftdi);
+		}
 
 		free(mpsse);
 		mpsse = NULL;
