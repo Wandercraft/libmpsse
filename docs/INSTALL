@@ -1,50 +1,56 @@
-PREREQUISITES
+NOTE:
+	I edited this script to make it easier to work in our dev environment.
+	I hope this different set of instructions may help someone else, but that's not my primary goal
 
+	w.r.t. the original project, I mostly changed:
+	- swig code to support (only?) python3, where strings and bytes are separate things
+	- the way to install the python libs. I do not doubt there is a way to make autotools do what I want, I just did not find it; so I worked around it.
+
+PREREQUISITES
 	Libmpsse is currently supported on the Linux and OSX platforms.
 
-	Libmpsse requires swig as well as the libftdi and python development packages. 
+	Libmpsse requires swig as well as the libftdi and python3 development packages.
 	These can typically be installed by your Linux distro's package manager, for Debian:
 
-		# apt-get install swig libftdi-dev python-dev autoconf automake libtool
+		# apt-get install libftdi-dev autoconf automake libtool pkg-config make
+
+	additionally, for python
+
+		# apt-get swig python3-dev python3-venv
+
 
 	For OSX, you will likely need to at least install libftdi from source.
 
 INSTALLATION
 
-	With the required prerequisites installed, libmpsse can be built and installed:
+	-> I recommend installing this package in a virtualenv. Instructions were updated accordingly
+	Assuming you create a virtualenv in the mpsse folder (but you can place it elsewhere if you like)
+		$ python3 -m venv env
+		$ source env/bin/activate
 
-		$ autoreconf --install
-		$ ./configure
-		$ make
-		# make install
-
-	Required paths, such as include and library directories, will typically be detected 
-	automatically by the configure script. To specify alternative directory paths, you 
+	Required paths, such as include and library directories, will typically be detected
+	automatically by the configure script. To specify alternative directory paths, you
 	may set the following environment variables:
 
 		SWIG   - Path to the swig binary
 		PYTHON - Path to the python binary
 
-	Example:
-
-		$ PYTHON=/usr/bin/python3 ./configure
+		$ cd src/
+		$ autoreconf --install
+		$ PYTHON=$(command -v python3) ./configure
 		$ make
-		# make install
 
 	To build without the Python wrapper libraries, specify the --disable-python argument
 	when running the configure script:
 
 		$ ./configure --disable-python
 
+	Install python with the script
+		$ bash install_python.sh
+
+
 BUILDING EXAMPLE CODE
 
 	After libmpsse has been installed, you can build the example C programs by running:
 
 		$ make examples
-
-UNINSTALLATION
-	
-	Libmpsse can be uninstalled from your system by running:
-
-		# make uninstall
-	
